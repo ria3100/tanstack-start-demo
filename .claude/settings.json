@@ -38,7 +38,7 @@
           {
             "type": "prompt",
             "if": "Bash(git push*)",
-            "prompt": "git push が完了した。`gh run list --limit 1` で CI ステータスを確認し結果を報告すること。PR への push の場合、auto-fix を有効化し CI 失敗時に自動修正を行うこと。"
+            "prompt": "git push が完了した。`gh run list --limit 1` で CI ステータスを確認し結果を報告すること。PR への push の場合、`gh pr view --json url -q .url` で PR URL を取得し、auto-fix が未有効なら https://claude.ai/code で有効化するよう案内すること。案内例: 「auto-fix を有効化する場合は claude.ai/code で以下を送信してください: {PR URL} を監視して、CI 失敗やレビューコメントを自動修正して」"
           }
         ]
       }
