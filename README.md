@@ -1,133 +1,88 @@
-Welcome to your new TanStack Start app!
+# TanStack Start Demo
 
-# Getting Started
-
-To run this application:
+## セットアップ
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
-# Building For Production
-
-To build this application for production:
+## ビルド
 
 ```bash
-npm run build
+pnpm build
 ```
 
-## Testing
+## テスト
 
-This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
+[Vitest](https://vitest.dev/) を使用。
 
 ```bash
-npm run test
+pnpm test
 ```
 
-## Styling
+## スタイリング
 
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
+[Tailwind CSS](https://tailwindcss.com/) v4 を使用。
 
-### Removing Tailwind CSS
+## Lint / フォーマット
 
-If you prefer not to use Tailwind CSS:
-
-1. Remove the demo pages in `src/routes/demo/`
-2. Replace the Tailwind import in `src/styles.css` with your own styles
-3. Remove `tailwindcss()` from the plugins array in `vite.config.ts`
-4. Uninstall the packages: `npm install @tailwindcss/vite tailwindcss -D`
-
-## Linting & Formatting
-
-This project uses [eslint](https://eslint.org/) and [prettier](https://prettier.io/) for linting and formatting. Eslint is configured using [tanstack/eslint-config](https://tanstack.com/config/latest/docs/eslint). The following scripts are available:
+[oxlint](https://oxc.rs/docs/guide/usage/linter) と [oxfmt](https://oxc.rs/docs/guide/usage/formatter) を使用。
 
 ```bash
-npm run lint
-npm run format
-npm run check
+pnpm lint      # oxlint
+pnpm format    # oxfmt --check
+pnpm check     # oxfmt --write && oxlint --fix
 ```
 
-## Shadcn
+## shadcn
 
-Add components using the latest version of [Shadcn](https://ui.shadcn.com/).
+[shadcn](https://ui.shadcn.com/) でUIコンポーネントを追加できる。生成されたコンポーネントは `src/components/ui/` に配置される。
 
 ```bash
 pnpm dlx shadcn@latest add button
 ```
 
-## Routing
+## Storybook
 
-This project uses [TanStack Router](https://tanstack.com/router) with file-based routing. Routes are managed as files in `src/routes`.
+```bash
+pnpm storybook
+```
 
-### Adding A Route
+## ディレクトリ構成
 
-To add a new route to your application just add a new file in the `./src/routes` directory.
+```
+src/
+  components/
+    ui/          # shadcn 生成コンポーネント
+    common/      # 汎用コンポーネント
+      layout/    # Header, Footer, ThemeToggle
+      media/     # Image, Picture
+  routes/        # ファイルベースルーティング
+  lib/           # ユーティリティ
+```
 
-TanStack will automatically generate the content of the route file for you.
+## ルーティング
 
-Now that you have two routes you can use a `Link` component to navigate between them.
+[TanStack Router](https://tanstack.com/router) のファイルベースルーティングを使用。`src/routes/` にファイルを追加するとルートが自動生成される。
 
-### Adding Links
+### ルートの追加
 
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
+`src/routes/` にファイルを追加する。TanStack Router がルートファイルの内容を自動生成する。
+
+### リンク
 
 ```tsx
 import { Link } from '@tanstack/react-router'
-```
 
-Then anywhere in your JSX you can use it like so:
-
-```tsx
 <Link to="/about">About</Link>
 ```
 
-This will create a link that will navigate to the `/about` route.
+### レイアウト
 
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
+レイアウトは `src/routes/__root.tsx` に定義する。全ルート共通のUIはここに記述する。
 
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you render `{children}` in the `shellComponent`.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
-
-export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'My App' },
-    ],
-  }),
-  shellComponent: ({ children }) => (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        <header>
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-          </nav>
-        </header>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  ),
-})
-```
-
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
-
-## Server Functions
-
-TanStack Start provides server functions that allow you to write server-side code that seamlessly integrates with your client components.
+## サーバー関数
 
 ```tsx
 import { createServerFn } from '@tanstack/react-start'
@@ -137,22 +92,9 @@ const getServerTime = createServerFn({
 }).handler(async () => {
   return new Date().toISOString()
 })
-
-// Use in a component
-function MyComponent() {
-  const [time, setTime] = useState('')
-
-  useEffect(() => {
-    getServerTime().then(setTime)
-  }, [])
-
-  return <div>Server time: {time}</div>
-}
 ```
 
-## API Routes
-
-You can create API routes by using the `server` property in your route definitions:
+## API ルート
 
 ```tsx
 import { createFileRoute } from '@tanstack/react-router'
@@ -167,11 +109,9 @@ export const Route = createFileRoute('/api/hello')({
 })
 ```
 
-## Data Fetching
+## データ取得
 
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
+TanStack Query またはTanStack Router の `loader` でデータを取得できる。
 
 ```tsx
 import { createFileRoute } from '@tanstack/react-router'
@@ -196,14 +136,9 @@ function PeopleComponent() {
 }
 ```
 
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
+詳細は [Loader ドキュメント](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters) を参照。
 
-# Demo files
+## 参考
 
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
-
-For TanStack Start specific documentation, visit [TanStack Start](https://tanstack.com/start).
+- [TanStack ドキュメント](https://tanstack.com)
+- [TanStack Start ドキュメント](https://tanstack.com/start)

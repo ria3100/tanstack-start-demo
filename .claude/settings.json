@@ -13,7 +13,7 @@
           {
             "type": "command",
             "if": "Bash(git commit*)",
-            "command": "pnpm -C \"$CLAUDE_PROJECT_DIR\" check",
+            "command": "pnpm -C \"$CLAUDE_PROJECT_DIR\" check && pnpm -C \"$CLAUDE_PROJECT_DIR\" test",
             "timeout": 120,
             "statusMessage": "Running check..."
           }
