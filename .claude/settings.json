@@ -1,0 +1,56 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "prompt",
+            "if": "Bash(pnpm install*)|Bash(pnpm i *)|Bash(pnpm add*)|Bash(pnpm remove*)|Bash(pnpm update*)|Bash(pnpm up*)|Bash(pnpm fetch*)|Bash(npm install*)|Bash(npm add*)|Bash(npm update*)",
+            "prompt": "Use the socket-firewall skill and prepend `sfw` to this command.",
+            "once": false
+          },
+          {
+            "type": "command",
+            "if": "Bash(git commit*)",
+            "command": "pnpm -C \"$CLAUDE_PROJECT_DIR\" check",
+            "timeout": 120,
+            "statusMessage": "Running check..."
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "prompt",
+            "if": "Bash(git push*)",
+            "prompt": "git push completed. Run `gh run list --limit 1` to check CI status and report the result."
+          }
+        ]
+      }
+    ],
+    "FileChanged": [
+      {
+        "matcher": "package.json",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "package.json was modified. Check for dependency or script changes."
+          }
+        ]
+      },
+      {
+        "matcher": "styles.css",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "styles.css was modified. This may affect Tailwind token definitions. Review the changes."
+          }
+        ]
+      }
+    ]
+  }
+}
