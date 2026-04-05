@@ -1,4 +1,4 @@
-# TanStack Start Demo
+# TanStack Start Boilerplate
 
 ## セットアップ
 
