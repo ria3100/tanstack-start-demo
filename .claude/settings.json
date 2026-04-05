@@ -7,7 +7,7 @@
           {
             "type": "prompt",
             "if": "Bash(pnpm install*)|Bash(pnpm i *)|Bash(pnpm add*)|Bash(pnpm remove*)|Bash(pnpm update*)|Bash(pnpm up*)|Bash(pnpm fetch*)|Bash(npm install*)|Bash(npm add*)|Bash(npm update*)",
-            "prompt": "Use the socket-firewall skill and prepend `sfw` to this command.",
+            "prompt": "socket-firewall スキルを使用し、コマンドの先頭に `sfw` を付けること。",
             "once": false
           },
           {
@@ -15,19 +15,30 @@
             "if": "Bash(git commit*)",
             "command": "pnpm -C \"$CLAUDE_PROJECT_DIR\" check && pnpm -C \"$CLAUDE_PROJECT_DIR\" exec tsgo --noEmit && pnpm -C \"$CLAUDE_PROJECT_DIR\" test",
             "timeout": 180,
-            "statusMessage": "Running check, tsc, test..."
+            "statusMessage": "check, tsgo, test を実行中..."
           }
         ]
       }
     ],
     "PostToolUse": [
       {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "prompt",
+            "if": "Edit(src/components/common/**/*.tsx)|Edit(src/routes/**/*.tsx)|Write(src/components/common/**/*.tsx)|Write(src/routes/**/*.tsx)",
+            "prompt": ".tsx ファイルが編集された。tailwind-reviewer スキルを使用して Tailwind クラスをレビューすること。src/components/ui/ と *.stories.tsx は対象外。",
+            "once": true
+          }
+        ]
+      },
+      {
         "matcher": "Bash",
         "hooks": [
           {
             "type": "prompt",
             "if": "Bash(git push*)",
-            "prompt": "git push completed. Run `gh run list --limit 1` to check CI status and report the result."
+            "prompt": "git push が完了した。`gh run list --limit 1` で CI ステータスを確認し結果を報告すること。"
           }
         ]
       }
@@ -38,7 +49,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "package.json was modified. Check for dependency or script changes."
+            "prompt": "package.json が変更された。依存関係やスクリプトの変更を確認すること。"
           }
         ]
       },
@@ -47,7 +58,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "styles.css was modified. This may affect Tailwind token definitions. Review the changes."
+            "prompt": "styles.css が変更された。Tailwind トークン定義への影響を確認すること。"
           }
         ]
       },
@@ -56,7 +67,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "Build or test config was modified. Verify that dev server, build, and tests still work correctly."
+            "prompt": "ビルドまたはテスト設定が変更された。dev サーバー、ビルド、テストが正常に動作するか確認すること。"
           }
         ]
       },
@@ -65,7 +76,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "tsconfig.json was modified. Check for path alias, compiler option, or include/exclude changes that may affect builds and IDE behavior."
+            "prompt": "tsconfig.json が変更された。パスエイリアス、コンパイラオプション、include/exclude の変更がビルドや IDE に影響しないか確認すること。"
           }
         ]
       },
@@ -74,7 +85,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "oxlint.json was modified. Review rule changes and verify lint still passes."
+            "prompt": "oxlint.json が変更された。ルール変更を確認し、lint が通ることを検証すること。"
           }
         ]
       }

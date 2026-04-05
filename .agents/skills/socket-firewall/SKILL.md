@@ -1,13 +1,13 @@
 ---
 name: socket-firewall
-description: Use when running dependency-fetching npm or pnpm commands so public registry packages go through Socket Firewall while private GitHub Packages remain allowed.
+description: 依存関係を取得・変更する npm/pnpm コマンド実行時に Socket Firewall (sfw) を適用する。
 ---
 
 # Socket Firewall
 
-Apply Socket Firewall (`sfw`) when running `npm` / `pnpm` commands that fetch or modify dependencies.
+依存関係を取得・変更する `npm` / `pnpm` コマンドに Socket Firewall (`sfw`) を適用する。
 
-## When to use
+## 対象コマンド
 
 - `pnpm install`
 - `pnpm add`
@@ -19,34 +19,33 @@ Apply Socket Firewall (`sfw`) when running `npm` / `pnpm` commands that fetch or
 - `npm add`
 - `npm update`
 
-Do not use for commands that don't fetch dependencies: `dev`, `build`, `lint`, `check`, `test`, `exec`, etc.
+依存関係を取得しないコマンド（`dev`, `build`, `lint`, `check`, `test`, `exec` 等）には使用しない。
 
-## Required rule
+## ルール
 
-Prefix dependency-fetching commands with `sfw`:
+依存関係を取得するコマンドの先頭に `sfw` を付ける:
 
 ```bash
 sfw pnpm install --frozen-lockfile
 sfw pnpm add zod
-sfw pnpm -C web add @tanstack/react-query
 sfw pnpm remove lodash
 sfw pnpm up
 ```
 
-## Private GitHub Packages
+## プライベート GitHub Packages
 
-- If `.npmrc` fetches scoped packages (e.g. `@tricot-inc`) from GitHub Packages, the free Socket Firewall tier does not officially support private/custom registries.
-- However, if private packages are first-party, it is acceptable for them to pass through unscanned.
-- The goal is to route public npm dependencies through `sfw`.
+- `.npmrc` でスコープ付きパッケージ（例: `@tricot-inc`）を GitHub Packages から取得している場合、無料版 Socket Firewall はプライベートレジストリを公式にはサポートしていない
+- ただしプライベートパッケージがファーストパーティであれば、スキャンなしで通過しても許容する
+- 目的はパブリック npm 依存関係を `sfw` 経由でスキャンすること
 
-## Decision rule
+## 判断基準
 
-1. If the command fetches dependencies, check whether `sfw` can be prepended
-2. If the command is read-only and `sfw` adds no value, run it as-is
-3. If the command already starts with `sfw pnpm ...` / `sfw npm ...`, run it as-is
-4. On failure, do not silently retry without `sfw` — report the failure
+1. 依存関係を取得するコマンドには `sfw` を付けられるか確認する
+2. 読み取り専用で `sfw` が不要なコマンドはそのまま実行する
+3. 既に `sfw pnpm ...` / `sfw npm ...` で始まっている場合はそのまま実行する
+4. 失敗時に `sfw` なしで暗黙的にリトライしない。失敗を報告する
 
-## Reporting
+## レポート
 
-- When running a dependency-fetching command, briefly note that it was executed with `sfw`
-- If private registry packages pass through unscanned, note that public dependency protection was still applied
+- 依存関係取得コマンドの実行時、`sfw` で実行したことを簡潔に記載する
+- プライベートレジストリのパッケージがスキャンなしで通過した場合、パブリック依存関係の保護は適用されている旨を記載する
