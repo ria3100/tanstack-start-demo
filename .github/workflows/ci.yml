@@ -20,14 +20,8 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Format check
-        run: pnpm format
-
-      - name: Lint
-        run: pnpm lint
-
-      - name: Type check
-        run: pnpm exec tsc --noEmit
+      - name: Check (fmt + lint + typecheck)
+        run: pnpm check
 
       - name: Test
         run: pnpm test

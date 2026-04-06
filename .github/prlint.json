@@ -1,0 +1,8 @@
+{
+  "title": [
+    {
+      "pattern": "^(feat|fix|update|docs|refactor|test|clean|chore|revert):\\s",
+      "message": "Your title needs to be prefixed with a topic.\nplease see https://github.com/tricot-inc/kamui/blob/main/CONTRIBUTING.md"
+    }
+  ]
+}

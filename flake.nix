@@ -18,6 +18,14 @@
                 exec npx --yes sfw "$@"
               '';
             };
+            # vp (Vite+) は nixpkgs に未収録のため、グローバルインストール済みのバイナリを呼び出す。
+            # 事前に `curl -fsSL https://vite.plus | bash` でインストールが必要。
+            vp = pkgs.writeShellApplication {
+              name = "vp";
+              text = ''
+                exec "$HOME/.vite-plus/bin/vp" "$@"
+              '';
+            };
           in
           pkgs.mkShell {
             packages = [
@@ -25,6 +33,7 @@
               pkgs.pnpm
               pkgs.gh
               sfw
+              vp
             ];
           };
       });

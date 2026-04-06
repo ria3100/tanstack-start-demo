@@ -58,7 +58,7 @@ function ORPCTodos() {
             onChange={(e) => setTodo(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
-                submitTodo()
+                void submitTodo()
               }
             }}
             placeholder="Enter a new todo..."

@@ -1,0 +1,6 @@
+onlyBuiltDependencies:
+  - esbuild
+  - lightningcss
+
+# 3日（4320分）
+minimumReleaseAge: 4320

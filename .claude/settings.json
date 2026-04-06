@@ -13,9 +13,9 @@
           {
             "type": "command",
             "if": "Bash(git commit*)",
-            "command": "pnpm -C \"$CLAUDE_PROJECT_DIR\" check && pnpm -C \"$CLAUDE_PROJECT_DIR\" exec tsgo --noEmit && pnpm -C \"$CLAUDE_PROJECT_DIR\" test",
-            "timeout": 180,
-            "statusMessage": "check, tsgo, test を実行中..."
+            "command": "pnpm -C \"$CLAUDE_PROJECT_DIR\" test",
+            "timeout": 120,
+            "statusMessage": "test を実行中..."
           }
         ]
       }
@@ -77,15 +77,6 @@
           {
             "type": "prompt",
             "prompt": "tsconfig.json が変更された。パスエイリアス、コンパイラオプション、include/exclude の変更がビルドや IDE に影響しないか確認すること。"
-          }
-        ]
-      },
-      {
-        "matcher": "oxlint.json",
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "oxlint.json が変更された。ルール変更を確認し、lint が通ることを検証すること。"
           }
         ]
       }

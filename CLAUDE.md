@@ -2,8 +2,7 @@
 
 ## Language
 
-- コードのコメント・ドキュメントは日本語可
-- コミットメッセージは英語
+- コードのコメント・ドキュメント・コミットメッセージは日本語
 
 ## File Naming
 
@@ -13,13 +12,13 @@
 ## Import Alias
 
 - `@/*` → `src/*` を使用（`#/*` は使わない）
-- `package.json` の `imports` フィールドは使用しない（`vite-tsconfig-paths` で解決）
+- `package.json` の `imports` フィールドは使用しない（Vite 組み込みの `resolve.tsconfigPaths` で解決）
 
 ## Component Structure
 
 ```
 src/components/
-  ui/           # shadcn 生成コンポーネント（手動編集しない）
+  ui/           # shadcn 生成コンポーネント
   common/       # 汎用コンポーネント
     layout/     # Header, Footer, ThemeToggle
     media/      # Image, Picture
@@ -32,10 +31,9 @@ src/components/
 
 ## Tooling
 
-- Lint: oxlint (`pnpm lint`)
-- Format: oxfmt (`pnpm format`)
-- Test: vitest (`pnpm test`)
-- Check: `pnpm check` (oxfmt --write && oxlint --fix)
+- Toolchain: [Vite+](https://viteplus.dev/) (`vp` CLI)
+- Check: `pnpm check` (oxfmt + oxlint + 型チェックを一括実行)
+- Test: `pnpm test`
 
 ## PR / CI
 

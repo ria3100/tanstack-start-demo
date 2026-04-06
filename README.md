@@ -15,7 +15,7 @@ pnpm build
 
 ## テスト
 
-[Vitest](https://vitest.dev/) を使用。
+[Vitest](https://vitest.dev/)（Vite+ 経由）を使用。
 
 ```bash
 pnpm test
@@ -25,30 +25,13 @@ pnpm test
 
 [Tailwind CSS](https://tailwindcss.com/) v4 を使用。
 
-## Lint / フォーマット
+## Check（Lint / フォーマット / 型チェック）
 
-[oxlint](https://oxc.rs/docs/guide/usage/linter) と [oxfmt](https://oxc.rs/docs/guide/usage/formatter) を使用。
-
-```bash
-pnpm lint      # oxlint
-pnpm format    # oxfmt --check
-pnpm check     # oxfmt --write && oxlint --fix
-```
-
-## 型チェック
-
-ローカルでは [tsgo](https://github.com/nicolo-ribaudo/tc39-proposal-type-annotations)（TypeScript の Go ネイティブ移植版）を使用して高速に型チェックを行う。CIでは安定性のため従来の `tsc` を使用する。
+[Vite+](https://viteplus.dev/) でフォーマット（oxfmt）、Lint（oxlint）、型チェックを一括実行する。
 
 ```bash
-pnpm exec tsgo --noEmit   # ローカル（高速）
-npx tsc --noEmit           # CI（安定）
+pnpm check     # vp check（oxfmt + oxlint + 型チェック）
 ```
-
-### 注意点
-
-- tsgo は `@typescript/native-preview` パッケージとして devDependencies に含まれている
-- tsgo は TypeScript 7.x 系ベースのため、一部の tsconfig オプション（`baseUrl` 等）が削除されている。`tsconfig.json` を変更する際は tsgo との互換性に注意すること
-- tsgo と tsc で型チェック結果に差異が出た場合は、tsc の結果を正とする
 
 ## shadcn
 
