@@ -14,7 +14,7 @@ const config = defineConfig({
     '*': 'vp check --fix',
   },
   lint: {
-    ignorePatterns: ['**/routeTree.gen.ts'],
+    ignorePatterns: ['**/routeTree.gen.ts', '.storybook/**'],
     options: { typeAware: true, typeCheck: true },
     rules: {
       'import/no-cycle': 'off',
